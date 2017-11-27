@@ -17,6 +17,21 @@ app.use(bodyParser.json());
 
 let server;
 
+app.get('/blogPosts', (req, res)=>{
+	blogPost
+	.find()
+	.then(blogPosts => {
+		res.json({
+			blogPosts: blogPosts.map((blogPost)=> blogPost.apiRepr())
+		});
+	})
+	.catch(
+		err => {
+			console.error(err);
+			res.status(500).json({message: 'fuck, god damnit'});
+		});
+});
+
 function runServer(databaseUrl=DATABASE_URL,
 	port=PORT) {
 
