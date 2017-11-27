@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 
+const bPRouter = require('./bPRouter');
+
 mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
@@ -14,6 +16,7 @@ app.use(bodyParser.json());
 
 //set up get, post, put, deletes here
 //after defining schema
+// app.use('/blogPost', bPRouter);
 
 let server;
 
