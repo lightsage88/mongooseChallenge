@@ -2,6 +2,8 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 
+const bPRouter = require('./bPRouter');
+
 mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
@@ -14,6 +16,26 @@ app.use(bodyParser.json());
 
 //set up get, post, put, deletes here
 //after defining schema
+// app.use('/blogPost', bPRouter);
+
+app.get('/blogPost', (req, res)=>{
+	blogPost
+	.find()
+	.then(blogPosts => {
+		res.json({
+			blogPosts: blogPosts.map(
+				(blogPost) => blogPost.apiRepr())
+		});
+	})
+	.catch(
+		err => {
+			console.error(err);
+			res.status(500).json({message: 'We fucked up, mang'});
+		});
+});
+
+
+
 
 let server;
 
