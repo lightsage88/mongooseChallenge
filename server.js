@@ -6,7 +6,7 @@ const morgan = require('morgan');
 mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
-const {Blogpost} = require('./models');
+const {blogPost} = require('./models');
 //models is where we will define the schema
 
 const app = express();
@@ -44,18 +44,87 @@ function runServer(databaseUrl=DATABASE_URL,
 
 
 app.get('/posts', (req, res)=>{
-	Blogpost
+	blogPost
 	.find()
-	.then(blogPosts => {
-		res.json(blogPosts.map(blogPost => blogPost.apiRepr())
-		);
-	})
+	.then(blahs => {
+		res.json(blahs.map(blogPost => blogPost.apiRepr()))
+		})	
 	.catch(
 		err => {
 			console.error(err);
 			res.status(500).json({message: 'internal server error'});
 		});
 });
+
+app.get('/posts/:id', (req, res)=>{
+	blogPost
+		.findById(req.params.id)
+		.then(blogPost => res.json(blogPost.apiRepr()))
+		.catch(err =>{
+			console.error(err);
+			res.status(500).json({message: 'Man, that shit don exist, cuz'})
+		});
+});
+
+app.post('/posts', (req, res)=>{
+	const requiredFields = ['author', 'title','content'];
+	for (let i=0; i<requiredFields.length; i++){
+		const field = requiredFields[i];
+		if(!(field in req.body)){
+			const message = `Missing \`${field}\` in request body`
+			console.error(message);
+			return res.status(400).send(message);
+		}
+	}
+
+	blogPost
+		.create({
+			author: req.body.author,
+			title: req.body.title,
+			content: req.body.content
+		})
+		.then(blogPost => res.status(201).json(blogPost.apiRepr()))
+		.catch(err => {
+			console.error(err);
+			res.status(500).json({error: 'aw, fuck'});
+		});
+});
+
+app.put('/posts/:id', (req, res)=>{
+	const requiredFields = ['id', 'title'];
+	
+		if(!(req.params.id && req.body.id && req.params.id === req.body.id)){
+			const message = `The req.params.id \`${req.params.id}\` and the req.body.id \`${req.body.id}\` need to match.`
+			console.error(message);
+			res.status(400).json({message: message});
+		}
+	const toUpdate = {};
+	const updateableFields = ['author', 'content', 'title'];
+
+	updateableFields.forEach(function(field){
+		if(field in req.body){
+			toUpdate[field]=req.body[field];
+		}
+	});
+
+	blogPost
+		.findByIdAndUpdate(req.params.id, {$set: toUpdate})
+		.then(blogPost => res.status(204).end())
+		.catch(err => res.status(500).json({message: 'We don fucked up, homie. That is our bad!'}));
+
+});
+
+app.delete('/posts/:id', (req, res) => {
+	blogPost
+		.findByIdAndRemove(req.params.id)
+		.then(blogPost => res.status(204).end())
+		.catch(err =>res.status(500).json({message: 'Yikes...shit'}));
+});
+
+app.use('*', function(req,res){
+	res.status(404).json({message: 'Man, you know that shit dont exist here...the fuck outta here'});
+});
+
 
 
 
