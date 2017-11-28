@@ -1,17 +1,17 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
-
-const bPRouter = require('./bPRouter');
+const morgan = require('morgan');
 
 mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
-const {blogPost} = require('./models');
+const {Blogpost} = require('./models');
 //models is where we will define the schema
 
 const app = express();
 app.use(bodyParser.json());
+app.use(morgan('common'));
 
 
 //set up get, post, put, deletes here
@@ -19,20 +19,7 @@ app.use(bodyParser.json());
 
 let server;
 
-app.get('/blogPosts', (req, res)=>{
-	blogPost
-	.find()
-	.then(blogPosts => {
-		res.json({
-			blogPosts: blogPosts.map((blogPost)=> blogPost.apiRepr())
-		});
-	})
-	.catch(
-		err => {
-			console.error(err);
-			res.status(500).json({message: 'fuck, god damnit'});
-		});
-});
+
 
 function runServer(databaseUrl=DATABASE_URL,
 	port=PORT) {
@@ -54,6 +41,23 @@ function runServer(databaseUrl=DATABASE_URL,
 		});
 	});
 }
+
+
+app.get('/posts', (req, res)=>{
+	Blogpost
+	.find()
+	.then(blogPosts => {
+		res.json(blogPosts.map(blogPost => blogPost.apiRepr())
+		);
+	})
+	.catch(
+		err => {
+			console.error(err);
+			res.status(500).json({message: 'internal server error'});
+		});
+});
+
+
 
 function closeServer(){
 	return mongoose.disconnect().then(()=>{
