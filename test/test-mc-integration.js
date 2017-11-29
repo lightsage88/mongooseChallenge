@@ -63,7 +63,7 @@ function torpedoDb(){
 }
 describe('blog test API', function(){
     before(function(){
-        return runServer(TEST_DATABASE_URL)
+        return runServer(TEST_DATABASE_URL);
     });
     beforeEach(function(){
         return seedBlogData();
@@ -72,7 +72,7 @@ describe('blog test API', function(){
         return torpedoDb();
     });
     after(function(){
-        return closeServer(TEST_DATABASE_URL);
+        return closeServer();
     });
     //now we use nested 'describe/it' blocks
     //lets us make clearer discrete tests that
@@ -196,7 +196,5 @@ describe('blog test API', function(){
     			should.not.exist(_blah);
     		});
     	});
-        
-    });
+        });
 });
-
