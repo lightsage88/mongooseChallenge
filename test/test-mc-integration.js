@@ -72,7 +72,7 @@ describe('blog test API', function(){
         return torpedoDb();
     });
     after(function(){
-        return closeServer();
+        return closeServer(TEST_DATABASE_URL);
     });
     //now we use nested 'describe/it' blocks
     //lets us make clearer discrete tests that
