@@ -179,7 +179,24 @@ describe('blog test API', function(){
         });
     });
     describe('the DELETE should ice some stuff', function(){
+    	it('should delete the post when given the id', function(){
+    		let dyingPost;
+    		blogPost
+    		.findOne()
+    		.then(function(_blah){
+    			blah = _blah;
+    			return chai.request(app)
+    			.delete(`/posts/${blah.id}`);
+    		})
+    		.then(function(res){
+    			res.should.have.status(204);
+    			return blogPost.findById(blah.id);
+    		})
+    		.then(function(_blah){
+    			should.not.exist(_blah);
+    		});
+    	});
         
-    })
+    });
 });
 
