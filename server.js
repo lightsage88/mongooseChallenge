@@ -25,10 +25,11 @@ function runServer(databaseUrl=DATABASE_URL,
 	port=PORT) {
 
 	return new Promise((resolve, reject)=>{
-		mongoose.useMongoClient(databaseUrl, err => {
+		mongoose.connect(databaseUrl, err => {
 			if(err) {
 				return reject(err);
 			}
+			console.log('here goes nothing, bitches');
 			server = app.listen(port, ()=>{
 				console.log(`Your app is cripping on
 					port ${port}`);
