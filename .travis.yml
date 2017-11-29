@@ -1,4 +1,11 @@
 language: node_js
 node_js: node
 services:
-  - mongodb
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: o+lYuxZZWiAtyw45BSfPGTs9iGce6K18Jk59XYKLf2dIyvo3CXpl/2+tz3FB91bcqe3s2xUxrzPWwyB7NnM8yqyP2/TxUdhyzeyZcHXbFmVeQzBCBs0L22Bs1Fbkrx2dg1mU8/qibEOKjwATfBCtfgTTAm6FU06tmgAS7bJS8jm2z375lUj0H/Gtk1AvqReqVRJmHA4jgwfv4D6kTXTWpkI4AHn638vtw1UHPF23AxGyfIH18aqBphea5+Vn02qhdwbztBHCce3svtoQNXkAyEJCv/g7/WPnoEz4QUW4woO8CJagMnkDu7izpW7cv48M8NovNTiudZOb/JTo6P1BqyHny9VCoUsNgMPSRkk4vH+J3s/Bk3c2O5VZN6b3Tauxqnb+Ti8AogR6hxTwgjxVHPKl1fd/twIudVlhml/3rnYezVqO2W8x0zGXPl8X+gFxjcvaingx4oxQlpUR+UlnBGXN3lwtvL1gcw/9xFmqRiUf2/y97PFel30NFTDQL1wP+0l9ZaSpMi53gWJBBOL9ubKhfzek4a/RPF832yU2QfNlLxb8Sq9xotW7X8c42JU31gPEgEOZLe+H/RU8JM/u8OgBuw/XZFN7ojs2ENzYWgypHM6Wgv+sek6884s7OBW1DIE1KEcaE+yDb7h7SfB+vGrcD+Wursa7DvKE+X2FpXE=
+  app: pure-wildwood-51251
+  on:
+    repo: lightsage88/mongooseChallenge
